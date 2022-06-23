@@ -68,7 +68,7 @@ class SignInActivity : AppCompatActivity() {
 
         viewModel.loginUserObservable().observe(this, Observer<UserResponse?> { response->
 
-            //I Do not know what logic to pass here!!
+            /**I Do not know what logic to pass here!!*/
             if (userId.isNotEmpty() && passwordId.isNotEmpty()) {
                 if (passwordId == "pass") {
                     Toast.makeText(this@SignInActivity, "Successfully created/updated user...", Toast.LENGTH_LONG).show()
@@ -86,6 +86,9 @@ class SignInActivity : AppCompatActivity() {
 
     }
 
+
+
+    /**Help me check this too. all the way down to the API call*/
 /*
     private fun signInUser(){
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
