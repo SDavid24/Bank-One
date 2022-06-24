@@ -22,6 +22,10 @@ class MainViewModel(private val repository: Repository
         return loadUserData
     }
 
+
+    fun signupNewUserObservable(): MutableLiveData<UserResponse?> {
+        return  signUpUserData
+    }
 /*
     fun loginUserData(user_id: String, context: Context) {
         val call = repository.loginUser()
@@ -52,6 +56,8 @@ class MainViewModel(private val repository: Repository
         call.enqueue(object : Callback<UserResponse?> {
             override fun onResponse(call: Call<UserResponse?>, response: Response<UserResponse?>) {
                 signUpUserData.postValue(response.body())
+                Log.e("Error Message", response.message().toString())
+
             }
 
             override fun onFailure(call: Call<UserResponse?>, t: Throwable) {

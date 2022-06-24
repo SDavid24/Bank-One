@@ -13,4 +13,11 @@ interface BankApi {
     @POST("auth/signup")
     @Headers("Accept:application/json", "Content-Type:application/json")
     fun signupUser(@Body params: User): Call<UserResponse>
+
+    @FormUrlEncoded
+    @POST("auth/signup")
+    @Headers("Accept:application/json", "Content-Type:application/json")
+    fun newUser(@Field("phoneNumber") phoneNumber: String,
+                @Field("balance") balance: Int,
+                @Field("created") created: String) : Call<UserResponse>
 }

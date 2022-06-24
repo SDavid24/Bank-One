@@ -11,6 +11,9 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_sign_in.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class SignInActivity : AppCompatActivity() {
     private lateinit var viewModel : MainViewModel
@@ -18,6 +21,7 @@ class SignInActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_in)
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
+
 
         //Actions(i.e showing the Sign Up interface) that should take place if the "Join now" word is clicked
         join_now.setOnClickListener {
@@ -48,13 +52,41 @@ class SignInActivity : AppCompatActivity() {
 
 
         login_button.setOnClickListener {
-            createUser()
+            //createUser()
         }
 
         register_button.setOnClickListener {
-           /* Toast.makeText(this@SignInActivity, "Successfully created/updated user...", Toast.LENGTH_LONG).show()*/
+            //signUpUser()
+
+           // Toast.makeText(this@SignInActivity, "this is the fake alert...", Toast.LENGTH_LONG).show()
             //goToMainActivity()
-            createUser()
+           createUser()
+
+        }
+    }
+
+
+    fun signUpUser(){
+        val userId = signIn_phone_input.text.toString()
+        val passwordId = signIn_password.text.toString()
+        val user = User(userId, 333333333, "MOUNTAIN EVEREST IS THE TALLEST MOUNTAIN")
+
+        val balance = 333333333
+        val date = "MOUNTAIN EVEREST IS THE TALLEST MOUNTAIN"
+
+        if (userId.isNotEmpty() && passwordId.isNotEmpty()) {
+
+            ApiInterface.api.newUser(userId, balance, date)
+                .enqueue(object: Callback<UserResponse> {
+                    override fun onFailure(call: Call<UserResponse>, t: Throwable) {
+                        Toast.makeText(applicationContext, t.message, Toast.LENGTH_LONG).show()
+                    }
+
+                    override fun onResponse(call: Call<UserResponse>, response: Response<UserResponse>) {
+                        Toast.makeText(applicationContext, response.body()?.message, Toast.LENGTH_LONG).show()
+                    }
+
+                })
         }
     }
 
@@ -66,16 +98,23 @@ class SignInActivity : AppCompatActivity() {
         val user = User(userId, 333333333, "MOUNTAIN EVEREST IS THE TALLEST MOUNTAIN")
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
 
-        viewModel.loginUserObservable().observe(this, Observer<UserResponse?> { response->
+        viewModel.signupNewUserObservable().observe(this, Observer<UserResponse?> { response->
 
             /**I Do not know what logic to pass here!!*/
             if (userId.isNotEmpty() && passwordId.isNotEmpty()) {
-                if (passwordId == "pass") {
-                    Toast.makeText(this@SignInActivity, "Successfully created/updated user...", Toast.LENGTH_LONG).show()
+                if(response != null) {
+                    Toast.makeText(
+                        this@SignInActivity, "Successfully created user...",
+                        Toast.LENGTH_LONG
+                    ).show()
 
                     goToMainActivity()
-                } else {
-                    showErrorSnackBar("Password should be 'pass'")
+                }else{
+                    Toast.makeText(
+                        this@SignInActivity, "Creating user was not successful...",
+                        Toast.LENGTH_LONG
+                    ).show()
+
                 }
 
             } else {
@@ -85,7 +124,6 @@ class SignInActivity : AppCompatActivity() {
         viewModel.signupUser(user)
 
     }
-
 
 
     /**Help me check this too. all the way down to the API call*/
