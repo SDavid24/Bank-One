@@ -100,7 +100,9 @@ class SignInActivity : AppCompatActivity() {
 
         viewModel.signupNewUserObservable().observe(this, Observer<UserResponse?> { response->
 
-            /**I Do not know what logic to pass here!!*/
+            /**It is bringing up the else statement here("Creating user was not successful..."). that means it is null*
+             * What do you thin i can do here
+             */
             if (userId.isNotEmpty() && passwordId.isNotEmpty()) {
                 if(response != null) {
                     Toast.makeText(
