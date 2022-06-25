@@ -20,4 +20,8 @@ interface BankApi {
     fun newUser(@Field("phoneNumber") phoneNumber: String,
                 @Field("balance") balance: Int,
                 @Field("created") created: String) : Call<UserResponse>
+
+    @GET("transactions")
+    @Headers("Accept:application/json","Content-Type:application/json")
+    fun getTransactionsList(): Call<TransactionsList>
 }

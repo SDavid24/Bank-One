@@ -17,7 +17,11 @@ class MainViewModel(private val repository: Repository
 
     var loadUserData : MutableLiveData<UserResponse?> = MutableLiveData()
     var signUpUserData : MutableLiveData<UserResponse?> = MutableLiveData()
+    var transactionListData : MutableLiveData<TransactionsList?> = MutableLiveData()
 
+    fun transactionListObservable(): MutableLiveData<TransactionsList?>{
+        return transactionListData
+    }
     fun loginUserObservable(): MutableLiveData<UserResponse?>{
         return loadUserData
     }
@@ -26,6 +30,29 @@ class MainViewModel(private val repository: Repository
     fun signupNewUserObservable(): MutableLiveData<UserResponse?> {
         return  signUpUserData
     }
+
+    fun transactionsLists() {
+        val call = repository.getTransactList()
+        call.enqueue(object : Callback<TransactionsList>{
+            override fun onResponse(
+                call: Call<TransactionsList>,
+                response: Response<TransactionsList>) {
+
+                if (response.isSuccessful){
+                    transactionListData.postValue(response.body())
+                }else{
+                    transactionListData.postValue(null)
+                }
+            }
+
+            override fun onFailure(call: Call<TransactionsList>, t: Throwable) {
+                transactionListData.postValue(null)
+            }
+
+        })
+    }
+
+
 /*
     fun loginUserData(user_id: String, context: Context) {
         val call = repository.loginUser()

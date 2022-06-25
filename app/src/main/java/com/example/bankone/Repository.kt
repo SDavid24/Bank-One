@@ -14,4 +14,6 @@ class Repository(private val api: BankApi)  {
 
     fun signUpUser(user: User) = api.signupUser(user)
 
+    fun getTransactList() = api.getTransactionsList()
+
 }

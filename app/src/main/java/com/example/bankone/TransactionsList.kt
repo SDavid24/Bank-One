@@ -2,17 +2,18 @@ package com.example.bankone
 
 
 data class TransactionsList(
-    val data: List<Transaction>?
+    var data: List<Transaction>?
 )
 
 data class Transaction(
-    val type : String,
-    val amount : Int,
-    val phoneNumber : String,
-    val created : String
+    var type : String,
+    var balance : Int,
+    var amount : Int,
+    var phoneNumber : String,
+    var created : String
 )
 
 data class TransactionResponse(
-    val status : Int?,
-    val data : User?
+    var status : Int?,
+    var data : User?
 )
