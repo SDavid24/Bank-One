@@ -12,7 +12,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class MainViewModel(private val repository: Repository
-                    = Repository(ApiInterface.api),
+                    = Repository(ApiInterface.api)
 ): ViewModel() {
 
     var loadUserData : MutableLiveData<UserResponse?> = MutableLiveData()
@@ -51,7 +51,6 @@ class MainViewModel(private val repository: Repository
 
         })
     }
-
 
 /*
     fun loginUserData(user_id: String, context: Context) {
