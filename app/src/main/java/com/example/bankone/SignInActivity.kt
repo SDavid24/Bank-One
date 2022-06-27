@@ -50,9 +50,8 @@ class SignInActivity : AppCompatActivity() {
             startActivity(Intent(this, MainActivity::class.java))
         }
 
-
         login_button.setOnClickListener {
-            //createUser()
+            signInUser()
         }
 
         register_button.setOnClickListener {
@@ -94,7 +93,7 @@ class SignInActivity : AppCompatActivity() {
         val userId = signIn_phone_input.text.toString()
         val passwordId = signIn_password.text.toString()
 
-        val user = User(userId, 333333333, "MOUNTAIN EVEREST IS THE TALLEST MOUNTAIN")
+        val user = User(userId, 0, "MOUNTAIN EVEREST IS THE TALLEST MOUNTAIN")
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
 
         viewModel.signupNewUserObservable().observe(this, Observer<UserResponse?> { response->
@@ -129,7 +128,7 @@ class SignInActivity : AppCompatActivity() {
 
 
     /**Help me check this too. all the way down to the API call*/
-/*
+
     private fun signInUser(){
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
 
@@ -138,10 +137,15 @@ class SignInActivity : AppCompatActivity() {
 
         viewModel.loginUserObservable().observe(this, Observer<UserResponse?> {
             if(userId.isNotEmpty() && passwordId.isNotEmpty()) {
-                if (passwordId.toString() == "pass") {
+                if (it != null) {
+                    Toast.makeText(
+                        this@SignInActivity, "Successfully created user...",
+                        Toast.LENGTH_LONG
+                    ).show()
 
+                    goToMainActivity()
                 } else {
-                    showErrorSnackBar("Input correct password")
+                    showErrorSnackBar("Error occurred")
                 }
 
             }else{
@@ -149,11 +153,10 @@ class SignInActivity : AppCompatActivity() {
             }
 
         })
-        viewModel.loginUserData( userId.toString(), this)
-
+        viewModel.loginUserData(this)
 
     }
-*/
+
 
     fun goToMainActivity(){
         startActivity(Intent(this, MainActivity::class.java))

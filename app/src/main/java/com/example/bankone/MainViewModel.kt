@@ -52,8 +52,8 @@ class MainViewModel(private val repository: Repository
         })
     }
 
-/*
-    fun loginUserData(user_id: String, context: Context) {
+
+    fun loginUserData(context: Context) {
         val call = repository.loginUser()
         call.enqueue(object : Callback<UserResponse?> {
             override fun onResponse(call: Call<UserResponse?>, response: Response<UserResponse?>) {
@@ -75,7 +75,7 @@ class MainViewModel(private val repository: Repository
             }
         })
     }
-*/
+
 
     fun signupUser(user: User) {
         val call = repository.signUpUser(user)
