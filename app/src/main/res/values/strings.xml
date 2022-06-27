@@ -20,4 +20,11 @@
     <!--Strings from  Activity Main-->
 
 
+    <string-array name="Transaction_type">
+    <item>Transfer</item>
+    <item>Deposit</item>
+    <item>Withdraw</item>
+    </string-array>
+
+
 </resources>

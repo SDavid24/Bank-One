@@ -90,7 +90,6 @@ class SignInActivity : AppCompatActivity() {
         }
     }
 
-
     private fun createUser(){
         val userId = signIn_phone_input.text.toString()
         val passwordId = signIn_password.text.toString()
@@ -112,6 +111,7 @@ class SignInActivity : AppCompatActivity() {
 
                     goToMainActivity()
                 }else{
+                    //Log.e("Signup Error", )
                     Toast.makeText(
                         this@SignInActivity, "Creating user was not successful...",
                         Toast.LENGTH_LONG

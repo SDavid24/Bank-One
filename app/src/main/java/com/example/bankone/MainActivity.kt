@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.lifecycle.Observer
@@ -12,8 +14,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.dropdown_text_view.*
 import kotlinx.android.synthetic.main.partial_main_activity.*
 import kotlinx.android.synthetic.main.partial_main_activity.rv_last_transactions
+import kotlinx.android.synthetic.main.partial_payment_activity.*
 import kotlinx.android.synthetic.main.partial_transact_activity.*
 
 class MainActivity : AppCompatActivity() {
@@ -31,6 +35,7 @@ class MainActivity : AppCompatActivity() {
         newTransfer.setOnClickListener {
             home_view.visibility = View.GONE
             history_view.visibility = View.GONE
+            payment_view.visibility = View.GONE
             transaction_view.visibility = View.VISIBLE
 
             Toast.makeText(
@@ -42,6 +47,7 @@ class MainActivity : AppCompatActivity() {
         newHomeBtn.setOnClickListener {
             transaction_view.visibility = View.GONE
             history_view.visibility = View.GONE
+            payment_view.visibility = View.GONE
             home_view.visibility = View.VISIBLE
 
             Toast.makeText(
@@ -52,8 +58,19 @@ class MainActivity : AppCompatActivity() {
         newHistoryBtn.setOnClickListener {
             transaction_view.visibility = View.GONE
             home_view.visibility = View.GONE
+            payment_view.visibility = View.GONE
             history_view.visibility = View.VISIBLE
+
         }
+
+        payment_button.setOnClickListener {
+            transaction_view.visibility = View.GONE
+            home_view.visibility = View.GONE
+            history_view.visibility = View.GONE
+            payment_view.visibility = View.VISIBLE
+        }
+
+        transactionTypeDropdown()
     }
 
     /**Method that configures the popup icon that's embedded in every recyclerview*/
@@ -95,6 +112,56 @@ class MainActivity : AppCompatActivity() {
             .invoke(menu,true)
     }
 */
+
+    private fun transactionTypeDropdown(){
+
+        val transactionType = resources.getStringArray(R.array.Transaction_type)
+        val arrayAdapter = ArrayAdapter(this, R.layout.dropdown_text_view, transactionType)
+        autoCompleteTextView.setAdapter(arrayAdapter)
+
+
+        autoCompleteTextView.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(adapterView: AdapterView<*>?, view: View?, position: Int, p3: Long) {
+
+                Toast.makeText(
+                    this@MainActivity,
+                    "You selected ${adapterView?.getItemAtPosition(position).toString()}",
+                    Toast.LENGTH_LONG
+                ).show()
+
+                when {
+                    autoCompleteTextView.text.toString() == "Transfer" -> {
+                        ll_deposit_form.visibility = View.GONE
+                        ll_withdraw_form.visibility = View.GONE
+                        ll_transfer_form.visibility = View.VISIBLE
+
+                    }
+                    autoCompleteTextView.text.toString() == "Deposit" -> {
+                        ll_withdraw_form.visibility = View.GONE
+                        ll_transfer_form.visibility = View.GONE
+                        ll_deposit_form.visibility = View.VISIBLE
+
+                    }
+                    autoCompleteTextView.text.toString() == "Withdraw" -> {
+                        ll_deposit_form.visibility = View.GONE
+                        ll_transfer_form.visibility = View.GONE
+                        ll_withdraw_form.visibility = View.VISIBLE
+
+                    }
+                    else -> {
+                        Toast.makeText(
+                            this@MainActivity, "You selected not selected anything",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+                }
+            }
+
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+            }
+
+        }
+    }
 
 
     fun getTransactList(){

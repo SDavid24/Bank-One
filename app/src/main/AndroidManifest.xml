@@ -12,6 +12,7 @@
         android:theme="@style/Theme.BankOne">
         <activity
             android:name=".SignInActivity"
+            android:screenOrientation="portrait"
             android:exported="true" >
 
             <intent-filter>
@@ -23,7 +24,9 @@
 
         <activity
             android:name=".MainActivity"
+            android:screenOrientation="portrait"
             android:exported="true">
+
         </activity>
     </application>
 
