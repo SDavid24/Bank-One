@@ -12,8 +12,21 @@ data class Transaction(
     var phoneNumber : String,
     var created : String
 )
+data class Transfer(
+    var phoneNumber : String,
+    var amount : Int,
+    )
+
+
+data class Withdrawal(
+    var phoneNumber : String,
+    var amount : Int,
+    )
+
+
 
 data class TransactionResponse(
-    var status : Int?,
-    var data : User?
+    var status : String,
+    val message: String?,
+    var data : Transfer?
 )

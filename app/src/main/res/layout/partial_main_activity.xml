@@ -68,7 +68,7 @@
         app:layout_constraintTop_toTopOf="@+id/view" />
 
     <TextView
-        android:id="@+id/textView4"
+        android:id="@+id/main_account_number"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -96,11 +96,11 @@
         app:iconPadding="4dp"
         app:iconSize="16dp"
         app:iconTint="@color/white"
-        app:layout_constraintBottom_toBottomOf="@+id/textView4"
+        app:layout_constraintBottom_toBottomOf="@+id/main_account_number"
         app:layout_constraintEnd_toStartOf="@+id/guideline2"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/textView4"
-        app:layout_constraintTop_toTopOf="@+id/textView4" />
+        app:layout_constraintStart_toEndOf="@+id/main_account_number"
+        app:layout_constraintTop_toTopOf="@+id/main_account_number" />
 
     <TextView
         android:id="@+id/textView6"
@@ -113,7 +113,7 @@
         android:textColor="@color/white"
         app:layout_constraintBottom_toTopOf="@+id/textView5"
         app:layout_constraintStart_toStartOf="@+id/view"
-        app:layout_constraintTop_toBottomOf="@+id/textView4"
+        app:layout_constraintTop_toBottomOf="@+id/main_account_number"
         app:layout_constraintVertical_bias="1.0" />
 
     <TextView

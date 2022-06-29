@@ -18,6 +18,7 @@
         android:id="@+id/transaction_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="75dp"
         android:visibility="gone">
         <include layout="@layout/partial_transact_activity" />
     </androidx.core.widget.NestedScrollView>

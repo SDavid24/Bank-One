@@ -10,10 +10,14 @@ class Repository(private val api: BankApi)  {
         return ApiInterface.api.getUser(user_id)
     }*/
 
-    fun loginUser() = api.loginUser()
+    fun loginUser(user: User) = api.loginUser(user)
 
     fun signUpUser(user: User) = api.signupUser(user)
 
     fun getTransactList() = api.getTransactionsList()
+
+    fun transfer(transfer: Transfer) = api.transferMoney(transfer)
+
+    fun withdraw(withdrawal: Withdrawal) = api.withdrawMoney(withdrawal)
 
 }

@@ -1,5 +1,6 @@
 package com.example.bankone
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -65,35 +66,12 @@ class SignInActivity : AppCompatActivity() {
     }
 
 
-    fun signUpUser(){
-        val userId = signIn_phone_input.text.toString()
-        val passwordId = signIn_password.text.toString()
-        val user = User(userId, 333333333, "MOUNTAIN EVEREST IS THE TALLEST MOUNTAIN")
-
-        val balance = 333333333
-        val date = "MOUNTAIN EVEREST IS THE TALLEST MOUNTAIN"
-
-        if (userId.isNotEmpty() && passwordId.isNotEmpty()) {
-
-            ApiInterface.api.newUser(userId, balance, date)
-                .enqueue(object: Callback<UserResponse> {
-                    override fun onFailure(call: Call<UserResponse>, t: Throwable) {
-                        Toast.makeText(applicationContext, t.message, Toast.LENGTH_LONG).show()
-                    }
-
-                    override fun onResponse(call: Call<UserResponse>, response: Response<UserResponse>) {
-                        Toast.makeText(applicationContext, response.body()?.message, Toast.LENGTH_LONG).show()
-                    }
-
-                })
-        }
-    }
 
     private fun createUser(){
         val userId = signIn_phone_input.text.toString()
         val passwordId = signIn_password.text.toString()
 
-        val user = User(userId, 0, "MOUNTAIN EVEREST IS THE TALLEST MOUNTAIN")
+        val user = User(userId, passwordId)
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
 
         viewModel.signupNewUserObservable().observe(this, Observer<UserResponse?> { response->
@@ -102,20 +80,25 @@ class SignInActivity : AppCompatActivity() {
              * What do you thin i can do here
              */
             if (userId.isNotEmpty() && passwordId.isNotEmpty()) {
-                if(response != null) {
-                    Toast.makeText(
-                        this@SignInActivity, "Successfully created user...",
-                        Toast.LENGTH_LONG
-                    ).show()
+                if (userId.length >= 10) {
+                    if (response != null) {
+                        Toast.makeText(
+                            this@SignInActivity, "Successfully created user...",
+                            Toast.LENGTH_LONG
+                        ).show()
 
-                    goToMainActivity()
+                        goToMainActivity(this, user)
+                    } else {
+                        //Log.e("Signup Error", )
+                        Toast.makeText(
+                            this@SignInActivity, "Creating user was not successful...",
+                            Toast.LENGTH_LONG
+                        ).show()
+
+                    }
                 }else{
-                    //Log.e("Signup Error", )
-                    Toast.makeText(
-                        this@SignInActivity, "Creating user was not successful...",
-                        Toast.LENGTH_LONG
-                    ).show()
-
+                    Toast.makeText(this, "Phone number can't be " +
+                            "less than 10 digits", Toast.LENGTH_LONG).show()
                 }
 
             } else {
@@ -130,20 +113,22 @@ class SignInActivity : AppCompatActivity() {
     /**Help me check this too. all the way down to the API call*/
 
     private fun signInUser(){
-        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
 
-        val userId = signIn_phone_input.text
-        val passwordId = signIn_password.text
+        val userId = signIn_phone_input.text.toString()
+        val passwordId = signIn_password.text.toString()
+
+        val user = User(userId, passwordId)
+        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
 
         viewModel.loginUserObservable().observe(this, Observer<UserResponse?> {
             if(userId.isNotEmpty() && passwordId.isNotEmpty()) {
                 if (it != null) {
                     Toast.makeText(
-                        this@SignInActivity, "Successfully created user...",
+                        this@SignInActivity, "Successfully logged in user...",
                         Toast.LENGTH_LONG
                     ).show()
 
-                    goToMainActivity()
+                    goToMainActivity(this, user)
                 } else {
                     showErrorSnackBar("Error occurred")
                 }
@@ -151,15 +136,15 @@ class SignInActivity : AppCompatActivity() {
             }else{
                 Toast.makeText(this, "Phone or password is empty", Toast.LENGTH_LONG).show()
             }
-
         })
-        viewModel.loginUserData(this)
-
+        viewModel.loginUserData(user, this)
     }
 
 
-    fun goToMainActivity(){
-        startActivity(Intent(this, MainActivity::class.java))
+    fun goToMainActivity(context: Context, user: User){
+        val intent = Intent(context, MainActivity::class.java)
+        intent.putExtra(ACCOUNT_DETAILS, user)
+        startActivity(intent)
     }
 
 
@@ -179,5 +164,10 @@ class SignInActivity : AppCompatActivity() {
         )  //To set background color of snack bar
 
         snackBar.show()
+    }
+
+
+    companion object{
+        const val ACCOUNT_DETAILS = "account_details"
     }
 }

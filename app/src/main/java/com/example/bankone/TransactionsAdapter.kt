@@ -33,6 +33,7 @@ class TransactionsAdapter(
             holder.itemView.tv_phoneNumber.text = model.phoneNumber
             holder.itemView.tv_balance.text = model.balance.toString()
             holder.itemView.tv_date.text = model.created
+            holder.itemView.placeholder_image.setImageResource(R.drawable.ic_user_place_holder)
 
             if (holder.itemView.tv_debitOrCredit.text.toString() == "debited"){
 

@@ -8,11 +8,13 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.PopupMenu
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.android.material.navigation.NavigationView
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.dropdown_text_view.*
 import kotlinx.android.synthetic.main.partial_main_activity.*
@@ -28,6 +30,24 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
+
+        val user : User?
+        if (intent.hasExtra(SignInActivity.ACCOUNT_DETAILS)){
+            user = intent.getSerializableExtra(
+                SignInActivity.ACCOUNT_DETAILS) as User
+
+            main_account_number.text = user.phoneNumber
+            payment_textView4.text = user.phoneNumber
+
+        }
+
+
+
+
+        send_button.setOnClickListener {
+            //moneyTransfer()
+            moneyWithdraw()
+        }
 
         getTransactList()
         transactionsRecyclerView()
@@ -72,6 +92,55 @@ class MainActivity : AppCompatActivity() {
 
         transactionTypeDropdown()
     }
+
+
+    fun moneyTransfer(){
+        val transferDestination = transfer_to_who_text.text.toString()
+        val amount = amount_to_transfer.text.toString()
+        val transfer = Transfer(transferDestination, amount.toInt())
+
+        viewModel.transferMoneyObservable().observe(this,
+            Observer<TransactionResponse?> { response ->
+
+                if (transferDestination.isNotEmpty() && amount.isNotEmpty()) {
+                    if (response == null) {
+                        Toast.makeText(this@MainActivity, "no result found...", Toast.LENGTH_LONG).show()
+                    } else {
+                        Toast.makeText(this@MainActivity, "Transfer successful!...", Toast.LENGTH_LONG).show()
+                    }
+                }else{
+                    Toast.makeText(this, "Account number or amount is empty", Toast.LENGTH_LONG).show()
+                }
+
+            })
+
+        viewModel.transferMoney(transfer)
+    }
+
+
+    private fun moneyWithdraw(){
+        val withdrawalAccount = transfer_to_who_text.text.toString()
+        val amount = amount_to_transfer.text.toString()
+        val withdrawal = Withdrawal(withdrawalAccount, amount.toInt())
+
+        viewModel.withdrawMoneyObservable().observe(this,
+            Observer<TransactionResponse?> { response ->
+
+                if (withdrawalAccount.isNotEmpty() && amount.isNotEmpty()) {
+                    if (response == null) {
+                        Toast.makeText(this@MainActivity, "Error occurred. Try again later.", Toast.LENGTH_LONG).show()
+                    } else {
+                        Toast.makeText(this@MainActivity, "Withdrawal successful!", Toast.LENGTH_LONG).show()
+                    }
+                }else{
+                    Toast.makeText(this, "Account number or amount is empty", Toast.LENGTH_LONG).show()
+                }
+
+            })
+
+        viewModel.withdrawMoney(withdrawal)
+    }
+
 
     /**Method that configures the popup icon that's embedded in every recyclerview*/
 
@@ -192,5 +261,24 @@ class MainActivity : AppCompatActivity() {
         all_transactions.adapter = transactionsAdapter
         all_transactions.setHasFixedSize(true)
 
+    }
+
+
+    /**Method for the snack bar that'll display throughout the app*/
+    fun showErrorSnackBar(message: String) {
+        val snackBar = Snackbar.make(
+            findViewById(android.R.id.content),
+            message, Snackbar.LENGTH_LONG
+        )
+        val snackBarView = snackBar.view
+
+        snackBarView.setBackgroundColor(
+            ContextCompat.getColor(
+                this,
+                R.color.snackBar_error_color
+            )
+        )  //To set background color of snack bar
+
+        snackBar.show()
     }
 }
