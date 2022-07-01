@@ -21,39 +21,16 @@
         android:orientation="vertical"
         app:layout_constraintGuide_end="20dp" />
 
-    <TextView
-        android:id="@+id/payment_textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:text="Make a Transaction"
-        android:textSize="25sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@+id/payment_guideline2"
-        app:layout_constraintStart_toStartOf="@+id/payment_guideline"
-        app:layout_constraintTop_toTopOf="parent"
-        />
-
-    <View
-        android:id="@+id/payment_divider_line"
-        android:layout_width="match_parent"
-        android:layout_height="3.5dp"
-        android:layout_marginTop="5dp"
-        android:background="@color/divider_color"
-        app:layout_constraintTop_toBottomOf="@+id/payment_textView2"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
-
     <View
         android:id="@+id/payment_card_view"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="22dp"
         android:background="@drawable/background_rounded"
         app:layout_constraintDimensionRatio="4:2"
         app:layout_constraintEnd_toStartOf="@+id/payment_guideline2"
         app:layout_constraintStart_toStartOf="@+id/payment_guideline"
-        app:layout_constraintTop_toBottomOf="@+id/payment_divider_line"/>
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <TextView
         android:id="@+id/payment_textView3"
@@ -124,7 +101,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginBottom="8dp"
-        android:text="Omar Herwitz"
+        android:text="David Solomon"
         android:textColor="@color/white"
         android:textSize="16sp"
         android:textStyle="bold"
@@ -189,7 +166,7 @@
             android:id="@+id/autoCompleteTextView"
             android:inputType="none"
             android:layout_weight="1"
-            android:text="Transfer" />
+            android:text="Transfer/Deposit" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <LinearLayout
@@ -197,6 +174,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:layout_marginTop="16dp"
         android:visibility="visible"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/drop_down_inputLayout">
@@ -206,7 +184,6 @@
             android:id="@+id/payment_destination_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
             android:textSize="20sp"
@@ -221,7 +198,7 @@
             android:layout_height="wrap_content"
             android:hint="Account no."
             android:inputType="phone"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="4dp"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
             app:layout_constraintStart_toStartOf="parent"
@@ -231,7 +208,7 @@
             android:id="@+id/amount_heading_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="5dp"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
             android:textSize="20sp"
@@ -244,7 +221,7 @@
             android:id="@+id/amount_to_transfer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="4dp"
             android:hint="00000"
             android:inputType="phone"
             android:layout_marginStart="20dp"
@@ -273,73 +250,45 @@
 
     </LinearLayout>
     <LinearLayout
-        android:id="@+id/ll_deposit_form"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:visibility="gone"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/drop_down_inputLayout">
-
-        <TextView
-            android:id="@+id/deposit_amount_heading_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
-            android:textSize="20sp"
-            android:text="Amount"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/transfer_to_who_text"/>
-
-        <EditText
-            android:id="@+id/amount_to_deposit"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:hint="00000"
-            android:inputType="phone"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/amount_heading_text"/>
-
-        <TextView
-            android:id="@+id/deposit_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginLeft="62dp"
-            android:layout_marginTop="18.7dp"
-            android:layout_marginRight="62dp"
-            android:background="@drawable/blue_fill__rounded_color"
-            android:fontFamily="@font/poppins_medium"
-            android:gravity="center"
-            android:paddingTop="12dp"
-            android:paddingBottom="12dp"
-            android:text="Deposit"
-            android:textColor="#ffffff"
-            android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/amount_to_transfer"/>
-
-    </LinearLayout>
-    <LinearLayout
         android:id="@+id/ll_withdraw_form"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:orientation="vertical"
         android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/drop_down_inputLayout">
+
+        <TextView
+            android:id="@+id/withdrawal_destination_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:textSize="20sp"
+            android:text="Withdraw from"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/drop_down_inputLayout"/>
+
+        <EditText
+            android:id="@+id/withdraw_from_who_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Account no."
+            android:inputType="phone"
+            android:layout_marginTop="4dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/payment_destination_text"/>
+
 
         <TextView
             android:id="@+id/withdraw_amount_heading_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="5dp"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
             android:textSize="20sp"
@@ -352,7 +301,7 @@
             android:id="@+id/amount_to_withdraw"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="4dp"
             android:hint="00000"
             android:inputType="phone"
             android:layout_marginStart="20dp"

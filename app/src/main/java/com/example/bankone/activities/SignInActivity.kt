@@ -1,23 +1,28 @@
-package com.example.bankone
+package com.example.bankone.activities
 
+import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.example.bankone.R
+import com.example.bankone.models.User
+import com.example.bankone.models.UserResponse
+import com.example.bankone.mvvm.MainViewModel
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_sign_in.*
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import kotlinx.android.synthetic.main.dialog_progress.*
 
 class SignInActivity : AppCompatActivity() {
     private lateinit var viewModel : MainViewModel
+    /**This is a progress dialog instance which we will initialize later on.*/
+    private lateinit var signProgressDialog : Dialog
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_in)
@@ -72,6 +77,7 @@ class SignInActivity : AppCompatActivity() {
         val passwordId = signIn_password.text.toString()
 
         val user = User(userId, passwordId)
+        signShowProgressDialog("Please wait...")
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
 
         viewModel.signupNewUserObservable().observe(this, Observer<UserResponse?> { response->
@@ -82,6 +88,7 @@ class SignInActivity : AppCompatActivity() {
             if (userId.isNotEmpty() && passwordId.isNotEmpty()) {
                 if (userId.length >= 10) {
                     if (response != null) {
+                        signHideProgressDialog()
                         Toast.makeText(
                             this@SignInActivity, "Successfully created user...",
                             Toast.LENGTH_LONG
@@ -89,6 +96,7 @@ class SignInActivity : AppCompatActivity() {
 
                         goToMainActivity(this, user)
                     } else {
+                        signHideProgressDialog()
                         //Log.e("Signup Error", )
                         Toast.makeText(
                             this@SignInActivity, "Creating user was not successful...",
@@ -97,6 +105,7 @@ class SignInActivity : AppCompatActivity() {
 
                     }
                 }else{
+                    signHideProgressDialog()
                     Toast.makeText(this, "Phone number can't be " +
                             "less than 10 digits", Toast.LENGTH_LONG).show()
                 }
@@ -118,22 +127,27 @@ class SignInActivity : AppCompatActivity() {
         val passwordId = signIn_password.text.toString()
 
         val user = User(userId, passwordId)
+
+        signShowProgressDialog("Please wait...")
+
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
 
         viewModel.loginUserObservable().observe(this, Observer<UserResponse?> {
             if(userId.isNotEmpty() && passwordId.isNotEmpty()) {
                 if (it != null) {
+                    signHideProgressDialog()
                     Toast.makeText(
                         this@SignInActivity, "Successfully logged in user...",
                         Toast.LENGTH_LONG
                     ).show()
 
                     goToMainActivity(this, user)
-                } else {
-                    showErrorSnackBar("Error occurred")
+                }else{
+                    signHideProgressDialog()
                 }
 
             }else{
+                signHideProgressDialog()
                 Toast.makeText(this, "Phone or password is empty", Toast.LENGTH_LONG).show()
             }
         })
@@ -148,22 +162,21 @@ class SignInActivity : AppCompatActivity() {
     }
 
 
-    /**Method for the snack bar that'll display throughout the app*/
-    fun showErrorSnackBar(message: String) {
-        val snackBar = Snackbar.make(
-            findViewById(android.R.id.content),
-            message, Snackbar.LENGTH_LONG
-        )
-        val snackBarView = snackBar.view
 
-        snackBarView.setBackgroundColor(
-            ContextCompat.getColor(
-                this,
-                R.color.snackBar_error_color
-            )
-        )  //To set background color of snack bar
+    /**Method to show the circling progress dialog when something is loading*/
+    fun signShowProgressDialog(text: String){
 
-        snackBar.show()
+        signProgressDialog = Dialog(this)
+        signProgressDialog.setContentView(R.layout.dialog_progress)  //Setting the circling progress icon
+        signProgressDialog.tv_progress_text.text = text   //Setting the text
+
+        //Starts the dialog and displays is on the screen
+        signProgressDialog.show()
+    }
+
+    /**Method to dismiss dialog*/
+    fun signHideProgressDialog(){
+        signProgressDialog.dismiss()
     }
 
 

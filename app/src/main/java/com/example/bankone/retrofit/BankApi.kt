@@ -1,5 +1,6 @@
-package com.example.bankone
+package com.example.bankone.retrofit
 
+import com.example.bankone.models.*
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -15,15 +16,15 @@ interface BankApi {
     fun signupUser(@Body params: User): Call<UserResponse>
 
 
-    @POST("accounts/transfer")
+    @POST("/accounts/transfer")
     @Headers("Accept:application/json", "Content-Type:application/json")
     fun transferMoney(@Body params: Transfer): Call<TransactionResponse>
 
-    @POST("accounts/withdraw")
+    @POST("/accounts/withdraw")
     @Headers("Accept:application/json", "Content-Type:application/json")
     fun withdrawMoney(@Body params: Withdrawal): Call<TransactionResponse>
 
-    @GET("transactions")
+    @GET("/transactions")
     @Headers("Accept:application/json","Content-Type:application/json")
     fun getTransactionsList(): Call<TransactionsList>
 }

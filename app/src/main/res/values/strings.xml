@@ -21,9 +21,8 @@
 
 
     <string-array name="Transaction_type">
-    <item>Transfer</item>
-    <item>Deposit</item>
-    <item>Withdraw</item>
+        <item>Transfer/Deposit</item>
+        <item>Withdrawal</item>
     </string-array>
 
 

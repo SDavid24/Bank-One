@@ -4,40 +4,110 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".activities.MainActivity">
 
-    <androidx.core.widget.NestedScrollView
-        android:id="@+id/home_view"
+
+    <LinearLayout
+        android:id="@+id/ll_home_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="visible">
-        <include layout="@layout/partial_main_activity" />
-    </androidx.core.widget.NestedScrollView>
-
-    <androidx.core.widget.NestedScrollView
-        android:id="@+id/transaction_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:orientation="vertical"
         android:layout_marginBottom="75dp"
-        android:visibility="gone">
-        <include layout="@layout/partial_transact_activity" />
-    </androidx.core.widget.NestedScrollView>
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-    <androidx.core.widget.NestedScrollView
-        android:id="@+id/history_view"
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/home_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="visible">
+            <include layout="@layout/partial_main_activity" />
+        </androidx.core.widget.NestedScrollView>
+
+
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/ll_transaction_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="gone">
-        <include layout="@layout/partial_history_activity" />
-    </androidx.core.widget.NestedScrollView>
+        android:orientation="vertical"
+        android:layout_marginBottom="75dp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-    <androidx.core.widget.NestedScrollView
-        android:id="@+id/payment_view"
+        <TextView
+            android:id="@+id/transaction_heading_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:textSize="25dp"
+            android:text="All Transactions"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:textColor="#5A5858"
+            android:fontFamily="@font/poppins_medium"
+            />
+
+        <View
+            android:id="@+id/divider_line"
+            android:layout_width="match_parent"
+            android:layout_height="3.5dp"
+            android:layout_marginTop="5dp"
+            android:background="@color/divider_color"/>
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/transaction_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <include layout="@layout/partial_transact_activity" />
+        </androidx.core.widget.NestedScrollView>
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/ll_payment_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="gone">
-        <include layout="@layout/partial_payment_activity" />
-    </androidx.core.widget.NestedScrollView>
+        android:orientation="vertical"
+        android:visibility="gone"
+        app:layout_constraintEnd_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/payment_textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_gravity="center"
+            android:text="Make a Transaction"
+            android:textSize="25sp"
+            android:textStyle="bold"
+            android:textColor="#5A5858"
+            android:fontFamily="@font/poppins_medium" />
+
+        <View
+            android:id="@+id/payment_divider_line"
+            android:layout_width="match_parent"
+            android:layout_height="3.5dp"
+            android:background="@color/divider_color"/>
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/payment_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <include layout="@layout/partial_payment_activity" />
+        </androidx.core.widget.NestedScrollView>
+
+    </LinearLayout>
 
 
     <com.google.android.material.bottomappbar.BottomAppBar
@@ -56,7 +126,6 @@
             android:layout_marginEnd="16dp"
             app:menu="@menu/bottom_nav" />
     </com.google.android.material.bottomappbar.BottomAppBar>
-
 
         <com.google.android.material.bottomappbar.BottomAppBar
             android:id="@+id/app_bar"
@@ -168,32 +237,29 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/menuProfile"
+                    android:id="@+id/signoutMenu"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="0.2"
                     android:orientation="vertical">
 
                     <ImageView
-                        android:id="@+id/setting_icon"
+                        android:id="@+id/signout_icon"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        app:srcCompat="@drawable/ic_user" />
+                        app:srcCompat="@drawable/ic_signout" />
 
                     <TextView
-                        android:id="@+id/profile_icon_text"
+                        android:id="@+id/signout_icon_text"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Profile"
+                        android:text="Signout"
                         android:textAlignment="center"
                          />
                 </LinearLayout>
             </LinearLayout>
         </com.google.android.material.bottomappbar.BottomAppBar>
-
-
-
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/payment_button"

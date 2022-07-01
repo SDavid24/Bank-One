@@ -1,8 +1,9 @@
-package com.example.bankone
+package com.example.bankone.mvvm
 
-import retrofit2.Call
-import retrofit2.Response
-import retrofit2.Retrofit
+import com.example.bankone.models.Transfer
+import com.example.bankone.models.User
+import com.example.bankone.models.Withdrawal
+import com.example.bankone.retrofit.BankApi
 
 class Repository(private val api: BankApi)  {
 

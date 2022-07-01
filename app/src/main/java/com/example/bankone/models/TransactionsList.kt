@@ -1,4 +1,4 @@
-package com.example.bankone
+package com.example.bankone.models
 
 
 data class TransactionsList(
@@ -22,7 +22,6 @@ data class Withdrawal(
     var phoneNumber : String,
     var amount : Int,
     )
-
 
 
 data class TransactionResponse(

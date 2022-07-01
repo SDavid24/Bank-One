@@ -1,5 +1,6 @@
-package com.example.bankone
+package com.example.bankone.retrofit
 
+import com.example.bankone.utils.Constants
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit

@@ -1,4 +1,4 @@
-package com.example.bankone
+package com.example.bankone.models
 
 import java.io.Serializable
 

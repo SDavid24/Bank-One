@@ -24,4 +24,7 @@
 
     <color name="divider_color">#EAEAEA</color>
 
+    <color name="primary_text_color">#363A43</color>
+
+
 </resources>
