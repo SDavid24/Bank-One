@@ -28,7 +28,7 @@ import kotlinx.android.synthetic.main.partial_transact_activity.*
 
 class MainActivity : AppCompatActivity() {
     private lateinit var transactionsAdapter: TransactionsAdapter
-    private lateinit var homeTransAdapter: HomeTransAdapter
+    private lateinit var homeTransAdapter: TransactionsAdapter
     private lateinit var viewModel :  MainViewModel
     private lateinit var newList : MutableList<Transaction>
 
@@ -203,10 +203,10 @@ class MainActivity : AppCompatActivity() {
 
                 } else {
                     hideProgressDialog()
-                    homeTransAdapter.list = response.data!!.toMutableList()
-                        //.takeLast(5) as MutableList<Transaction>
 
-                    transactionsAdapter.list = response.data!!.toMutableList()
+                    homeTransAdapter.list = response.data!!.toMutableList()
+                    transactionsAdapter.list = response.data!!.toMutableList().takeLast(5) as MutableList<Transaction>
+
                     transactionsAdapter.notifyDataSetChanged()
                 }
 
@@ -215,22 +215,31 @@ class MainActivity : AppCompatActivity() {
         viewModel.transactionsLists()
     }
 
-    private fun homeRecyclerView(){
-        homeTransAdapter = HomeTransAdapter(this)
-        homeTransAdapter.list.takeLast(5)
-        rv_last_transactions.adapter = homeTransAdapter
+
+
+    private fun homeRecyclerView() {
+        homeTransAdapter = TransactionsAdapter(this)
+        all_transactions.adapter = homeTransAdapter
+
         //rv_last_transactions.layoutManager = LinearLayoutManager(this)
-        rv_last_transactions.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, true)
-        rv_last_transactions.setHasFixedSize(true)
+        all_transactions.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, true)
+        all_transactions.setHasFixedSize(true)
     }
+
 
     private fun transactionsRecyclerView() {
         transactionsAdapter = TransactionsAdapter(this)
-        all_transactions.adapter = transactionsAdapter
+     /*   all_transactions.adapter = transactionsAdapter
 
-        all_transactions.layoutManager = LinearLayoutManager(this)
-     /*   all_transactions.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, true)*/
+        //rv_last_transactions.layoutManager = LinearLayoutManager(this)
+        all_transactions.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, true)
         all_transactions.setHasFixedSize(true)
+*/
+        rv_last_transactions.adapter = transactionsAdapter
+
+        //rv_last_transactions.layoutManager = LinearLayoutManager(this)
+        rv_last_transactions.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, true)
+        rv_last_transactions.setHasFixedSize(true)
     }
 
 
