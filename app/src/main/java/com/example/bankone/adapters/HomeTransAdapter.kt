@@ -16,7 +16,7 @@ class HomeTransAdapter(
 ): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     class HomeViewHolder(view: View): RecyclerView.ViewHolder(view)
-    var list  = mutableListOf<Transaction>().subList(1, 6)
+    var list  = mutableListOf<Transaction>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return HomeViewHolder(

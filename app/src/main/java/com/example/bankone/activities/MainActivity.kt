@@ -62,8 +62,8 @@ class MainActivity : AppCompatActivity() {
         }
 
         getTransactList()
-        transactionsRecyclerView()
         homeRecyclerView()
+        transactionsRecyclerView()
 
         newTransfer.setOnClickListener {
             ll_home_view.visibility = View.GONE
@@ -204,6 +204,8 @@ class MainActivity : AppCompatActivity() {
                 } else {
                     hideProgressDialog()
                     homeTransAdapter.list = response.data!!.toMutableList()
+                        //.takeLast(5) as MutableList<Transaction>
+
                     transactionsAdapter.list = response.data!!.toMutableList()
                     transactionsAdapter.notifyDataSetChanged()
                 }
@@ -215,13 +217,12 @@ class MainActivity : AppCompatActivity() {
 
     private fun homeRecyclerView(){
         homeTransAdapter = HomeTransAdapter(this)
+        homeTransAdapter.list.takeLast(5)
         rv_last_transactions.adapter = homeTransAdapter
-
-        rv_last_transactions.layoutManager = LinearLayoutManager(this)
-        /*rv_last_transactions.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, true)*/
+        //rv_last_transactions.layoutManager = LinearLayoutManager(this)
+        rv_last_transactions.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, true)
         rv_last_transactions.setHasFixedSize(true)
     }
-
 
     private fun transactionsRecyclerView() {
         transactionsAdapter = TransactionsAdapter(this)
@@ -231,6 +232,7 @@ class MainActivity : AppCompatActivity() {
      /*   all_transactions.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, true)*/
         all_transactions.setHasFixedSize(true)
     }
+
 
     /**Method to show the circling progress dialog when something is loading*/
     fun showProgressDialog(text: String){

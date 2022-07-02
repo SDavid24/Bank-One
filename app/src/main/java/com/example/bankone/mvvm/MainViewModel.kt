@@ -130,7 +130,6 @@ class MainViewModel(private val repository: Repository
             override fun onResponse(call: Call<TransactionResponse?>, response: Response<TransactionResponse?>) {
                 transferMoneyData.postValue(response.body())
                 Log.e("Error Message", response.message().toString())
-
             }
 
             override fun onFailure(call: Call<TransactionResponse?>, t: Throwable) {
@@ -139,7 +138,5 @@ class MainViewModel(private val repository: Repository
             }
         })
     }
-
-
 
 }

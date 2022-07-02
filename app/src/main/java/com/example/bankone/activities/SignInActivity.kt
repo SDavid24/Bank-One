@@ -50,10 +50,12 @@ class SignInActivity : AppCompatActivity() {
 
         do_you_have_an_account.setOnClickListener {
             startActivity(Intent(this, MainActivity::class.java))
+            finish()
         }
 
         new_to_bankOne.setOnClickListener {
             startActivity(Intent(this, MainActivity::class.java))
+            finish()
         }
 
         login_button.setOnClickListener {
@@ -159,6 +161,7 @@ class SignInActivity : AppCompatActivity() {
         val intent = Intent(context, MainActivity::class.java)
         intent.putExtra(ACCOUNT_DETAILS, user)
         startActivity(intent)
+        finish()
     }
 
 

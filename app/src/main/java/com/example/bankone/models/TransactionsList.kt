@@ -12,6 +12,7 @@ data class Transaction(
     var phoneNumber : String,
     var created : String
 )
+
 data class Transfer(
     var phoneNumber : String,
     var amount : Int,
