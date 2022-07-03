@@ -4,17 +4,18 @@ import android.app.Dialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.TextUtils
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.core.text.isDigitsOnly
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.bankone.R
-import com.example.bankone.adapters.HomeTransAdapter
 import com.example.bankone.adapters.TransactionsAdapter
 import com.example.bankone.models.*
 import com.example.bankone.mvvm.MainViewModel
@@ -31,6 +32,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var homeTransAdapter: TransactionsAdapter
     private lateinit var viewModel :  MainViewModel
     private lateinit var newList : MutableList<Transaction>
+
+    //private lateinit var withdrawal : Withdrawal
 
 
     /**This is a progress dialog instance which we will initialize later on.*/
@@ -69,6 +72,7 @@ class MainActivity : AppCompatActivity() {
             ll_home_view.visibility = View.GONE
             ll_payment_view.visibility = View.GONE
             ll_transaction_view.visibility = View.VISIBLE
+            getTransactList()
         }
 
         newHomeBtn.setOnClickListener {
@@ -76,6 +80,7 @@ class MainActivity : AppCompatActivity() {
             ///history_view.visibility = View.GONE
             ll_payment_view.visibility = View.GONE
             ll_home_view.visibility = View.VISIBLE
+            getTransactList()
         }
 
         payment_button.setOnClickListener {
@@ -108,6 +113,8 @@ class MainActivity : AppCompatActivity() {
                     } else {
                         hideProgressDialog()
                         Toast.makeText(this@MainActivity, "Transfer successful!...", Toast.LENGTH_LONG).show()
+                        transfer_to_who_text.text.clear()
+                        amount_to_transfer.text.clear()
                     }
                 }else{
                     hideProgressDialog()
@@ -121,31 +128,57 @@ class MainActivity : AppCompatActivity() {
 
 
     private fun moneyWithdraw(){
-        val withdrawalAccount = transfer_to_who_text.text.toString()
-        val amount = amount_to_transfer.text.toString()
-        val withdrawal = Withdrawal(withdrawalAccount, amount.toInt())
-        showProgressDialog("Please wait...")
+        val withdrawalAccount = withdraw_from_who_text.text.toString()
+        var amount = amount_to_withdraw.text.toString()
 
         viewModel.withdrawMoneyObservable().observe(this,
             Observer<TransactionResponse?> { response ->
 
                 if (withdrawalAccount.isNotEmpty() && amount.isNotEmpty()) {
+                //if (validateSignUpForm(withdrawalAccount, amou)) {
+
+                    showProgressDialog("Please wait...")
+
+                //if(!TextUtils.isEmpty(withdrawalAccount) && !TextUtils.isEmpty(amount)){
                     if (response == null) {
                         hideProgressDialog()
                         Toast.makeText(this@MainActivity, "Transfer failed!. Check the input details or your data connection and try again.", Toast.LENGTH_LONG).show()
                     } else {
                         hideProgressDialog()
                         Toast.makeText(this@MainActivity, "Withdrawal successful!", Toast.LENGTH_LONG).show()
+                        withdraw_from_who_text.text.clear()
+                        amount_to_withdraw.text.clear()
+
                     }
                 }else{
                     hideProgressDialog()
                     Toast.makeText(this, "Account number or amount is empty", Toast.LENGTH_LONG).show()
                 }
-
             })
-
-        viewModel.withdrawMoney(withdrawal)
+        ///val withdrawal = Withdrawal(withdrawalAccount, amount)
+        viewModel.withdrawMoney(Withdrawal(withdrawalAccount, amount.toInt()))
     }
+
+
+    private fun validateSignUpForm(withdrawTo: String,
+                                   amount: String) : Boolean{
+        return when {
+            TextUtils.isEmpty(withdrawTo) ->{
+                showErrorSnackBar("Please enter an account number")
+                false
+            }
+
+            TextUtils.isEmpty(amount) ->{
+                showErrorSnackBar("Please enter an amount")
+                false
+            }
+
+            else -> {
+                true
+            }
+        }
+    }
+
 
     private fun transactionTypeDropdown(){
 

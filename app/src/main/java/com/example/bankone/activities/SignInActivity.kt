@@ -73,7 +73,6 @@ class SignInActivity : AppCompatActivity() {
     }
 
 
-
     private fun createUser(){
         val userId = signIn_phone_input.text.toString()
         val passwordId = signIn_password.text.toString()
