@@ -48,31 +48,26 @@ class SignInActivity : AppCompatActivity() {
         }
 
 
-        do_you_have_an_account.setOnClickListener {
-            startActivity(Intent(this, MainActivity::class.java))
-            finish()
-        }
-
-        new_to_bankOne.setOnClickListener {
-            startActivity(Intent(this, MainActivity::class.java))
-            finish()
-        }
 
         login_button.setOnClickListener {
             signInUser()
         }
 
         register_button.setOnClickListener {
-            //signUpUser()
-
-           // Toast.makeText(this@SignInActivity, "this is the fake alert...", Toast.LENGTH_LONG).show()
-            //goToMainActivity()
            createUser()
+        }
 
+
+        //If user wants to bypass the login/signup process completely
+        forgot_password.setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+            finish()
         }
     }
 
 
+    /**Method that calls in the method in the view model that's is in charge of the business logic behind creating a user using the API */
     private fun createUser(){
         val userId = signIn_phone_input.text.toString()
         val passwordId = signIn_password.text.toString()
@@ -83,9 +78,6 @@ class SignInActivity : AppCompatActivity() {
 
         viewModel.signupNewUserObservable().observe(this, Observer<UserResponse?> { response->
 
-            /**It is bringing up the else statement here("Creating user was not successful..."). that means it is null*
-             * What do you thin i can do here
-             */
             if (userId.isNotEmpty() && passwordId.isNotEmpty()) {
                 if (userId.length >= 10) {
                     if (response != null) {
@@ -120,8 +112,7 @@ class SignInActivity : AppCompatActivity() {
     }
 
 
-    /**Help me check this too. all the way down to the API call*/
-
+    /**Method that calls in the method in the view model that's is in charge of the business logic behind Signing in a user that already has an account using the API */
     private fun signInUser(){
 
         val userId = signIn_phone_input.text.toString()

@@ -56,25 +56,33 @@ class MainActivity : AppCompatActivity() {
         }
 
         send_button.setOnClickListener {
-            moneyTransfer()
-
+           // if(amount_to_transfer.text.isNotEmpty()){
+            if(validateTransferForm(transfer_to_who_text.text.toString(),
+                    amount_to_transfer.text.toString())){
+                moneyTransfer()
+            }
         }
 
         withdraw_button.setOnClickListener {
-            moneyWithdraw()
+            if(validateWithdrawalForm(withdraw_from_who_text.text.toString(),
+                    amount_to_withdraw.text.toString())){
+                moneyWithdraw()
+            }
         }
 
         getTransactList()
         homeRecyclerView()
         transactionsRecyclerView()
 
-        newTransfer.setOnClickListener {
+        /**Click listener for the Transaction icon*/
+        newTransaction.setOnClickListener {
             ll_home_view.visibility = View.GONE
             ll_payment_view.visibility = View.GONE
             ll_transaction_view.visibility = View.VISIBLE
             getTransactList()
         }
 
+        /**Click listener for the home icon*/
         newHomeBtn.setOnClickListener {
             ll_transaction_view.visibility = View.GONE
             ///history_view.visibility = View.GONE
@@ -83,6 +91,7 @@ class MainActivity : AppCompatActivity() {
             getTransactList()
         }
 
+        /**Click listener for the Payment button*/
         payment_button.setOnClickListener {
             ll_transaction_view.visibility = View.GONE
             ll_home_view.visibility = View.GONE
@@ -91,6 +100,7 @@ class MainActivity : AppCompatActivity() {
 
         transactionTypeDropdown()
 
+        /**Click listener for the sign out icon. It takes the user back to the login page*/
         signoutMenu.setOnClickListener {
             startActivity(Intent(this, SignInActivity::class.java))
             finish()
@@ -98,27 +108,25 @@ class MainActivity : AppCompatActivity() {
     }
 
 
+    /**Method that calls in the method in the view model that's is in charge of the business logic behind transferring or depositing money from an indicated account using the API */
     fun moneyTransfer(){
         val transferDestination = transfer_to_who_text.text.toString()
         val amount = amount_to_transfer.text.toString()
-        val transfer = Transfer(transferDestination, amount.toInt())
         showProgressDialog("Please wait...")
+
+        val transfer = Transfer(transferDestination, amount.toInt())
         viewModel.transferMoneyObservable().observe(this,
             Observer<TransactionResponse?> { response ->
 
-                if (transferDestination.isNotEmpty() && amount.isNotEmpty()) {
-                    if (response == null) {
-                        hideProgressDialog()
-                        Toast.makeText(this@MainActivity, "Transfer failed!. Check the input details or your data connection and try again", Toast.LENGTH_LONG).show()
-                    } else {
-                        hideProgressDialog()
-                        Toast.makeText(this@MainActivity, "Transfer successful!...", Toast.LENGTH_LONG).show()
-                        transfer_to_who_text.text.clear()
-                        amount_to_transfer.text.clear()
-                    }
-                }else{
+                if (response == null) {
                     hideProgressDialog()
-                    Toast.makeText(this, "Account number or amount is empty", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this@MainActivity, "Transfer failed!. Check the input details or your data connection and try again", Toast.LENGTH_LONG).show()
+                } else {
+                    hideProgressDialog()
+                    Toast.makeText(this@MainActivity, "Transfer successful!...",
+                        Toast.LENGTH_LONG).show()
+                    transfer_to_who_text.text.clear()
+                    amount_to_transfer.text.clear()
                 }
 
             })
@@ -126,50 +134,62 @@ class MainActivity : AppCompatActivity() {
         viewModel.transferMoney(transfer)
     }
 
-
+    /**Method that calls in the method in the view model that's is in charge of the business logic behind withdrawing money from an indicated account using the API */
     private fun moneyWithdraw(){
         val withdrawalAccount = withdraw_from_who_text.text.toString()
-        var amount = amount_to_withdraw.text.toString()
+        val amount = amount_to_withdraw.text.toString()
+        showProgressDialog("Please wait...")
 
         viewModel.withdrawMoneyObservable().observe(this,
             Observer<TransactionResponse?> { response ->
 
-                if (withdrawalAccount.isNotEmpty() && amount.isNotEmpty()) {
-                //if (validateSignUpForm(withdrawalAccount, amou)) {
-
-                    showProgressDialog("Please wait...")
-
-                //if(!TextUtils.isEmpty(withdrawalAccount) && !TextUtils.isEmpty(amount)){
-                    if (response == null) {
-                        hideProgressDialog()
-                        Toast.makeText(this@MainActivity, "Transfer failed!. Check the input details or your data connection and try again.", Toast.LENGTH_LONG).show()
-                    } else {
-                        hideProgressDialog()
-                        Toast.makeText(this@MainActivity, "Withdrawal successful!", Toast.LENGTH_LONG).show()
-                        withdraw_from_who_text.text.clear()
-                        amount_to_withdraw.text.clear()
-
-                    }
-                }else{
+                if (response == null) {
                     hideProgressDialog()
-                    Toast.makeText(this, "Account number or amount is empty", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this@MainActivity, "Transfer failed!. Check the input details or your data connection and try again.", Toast.LENGTH_LONG).show()
+                } else {
+                    hideProgressDialog()
+                    Toast.makeText(this@MainActivity, "Withdrawal successful!", Toast.LENGTH_LONG).show()
+                    withdraw_from_who_text.text.clear()
+                    amount_to_withdraw.text.clear()
                 }
+
             })
-        ///val withdrawal = Withdrawal(withdrawalAccount, amount)
-        viewModel.withdrawMoney(Withdrawal(withdrawalAccount, amount.toInt()))
+
+        val withdrawal = Withdrawal(withdrawalAccount, amount.toInt())
+        viewModel.withdrawMoney(withdrawal)
     }
 
 
-    private fun validateSignUpForm(withdrawTo: String,
+    /**An external check that is done to see if any of the text views in the Transfer details form is blank when she tries to carry out a Transfer transaction and then notifies the user immediately. */
+    private fun validateTransferForm(TransferTo: String,
                                    amount: String) : Boolean{
         return when {
-            TextUtils.isEmpty(withdrawTo) ->{
-                showErrorSnackBar("Please enter an account number")
+            TextUtils.isEmpty(TransferTo) ->{
+                showErrorSnackBar("Please enter an account number to transfer to")
                 false
             }
 
             TextUtils.isEmpty(amount) ->{
-                showErrorSnackBar("Please enter an amount")
+                showErrorSnackBar("Amount to be transferred is not stated")
+                false
+            }
+
+            else -> {
+                true
+            }
+        }
+    }
+
+    /**An external check that is done to see if any of the text views in the WithdrawaL details form is blank when she tries to carry out a Withdrawal transaction and then notifies the user immediately. */
+    private fun validateWithdrawalForm(withdrawTo: String,
+                                   amount: String) : Boolean{
+        return when {
+            TextUtils.isEmpty(withdrawTo) ->{
+                showErrorSnackBar("Please enter an account number to withdraw from")
+                false
+            }
+            TextUtils.isEmpty(amount) ->{
+                showErrorSnackBar("Amount to be withdrawn is not stated")
                 false
             }
 
@@ -180,6 +200,7 @@ class MainActivity : AppCompatActivity() {
     }
 
 
+    /**Method that configures the dropdown menu which indicates the type of transaction that's being carried out. Either Transfer or Withdraw*/
     private fun transactionTypeDropdown(){
 
         val transactionType = resources.getStringArray(R.array.Transaction_type)
@@ -195,6 +216,7 @@ class MainActivity : AppCompatActivity() {
             override fun onNothingSelected(p0: AdapterView<*>?) {
             }
 
+            /**What should happen when a particular click listener is selected*/
             override fun onItemClick(adapterView: AdapterView<*>?, p1: View?, position: Int, p3: Long) {
                 when {
                     autoCompleteTextView.text.toString() == "Transfer/Deposit" -> {
@@ -225,6 +247,7 @@ class MainActivity : AppCompatActivity() {
     }
 
 
+    /**Method that calls in the method in the view model that's is in charge of the business logic behind getting the list of all transactions from the API source*/
     fun getTransactList(){
         showProgressDialog("Please wait...")
         viewModel.transactionListObservable().observe(this,
@@ -250,6 +273,7 @@ class MainActivity : AppCompatActivity() {
 
 
 
+    /**Method to load the recycler view transaction list data in the home view*/
     private fun homeRecyclerView() {
         homeTransAdapter = TransactionsAdapter(this)
         all_transactions.adapter = homeTransAdapter
@@ -259,18 +283,11 @@ class MainActivity : AppCompatActivity() {
         all_transactions.setHasFixedSize(true)
     }
 
-
+    /**Method to load the recycler view transaction list data in the All transactions view*/
     private fun transactionsRecyclerView() {
         transactionsAdapter = TransactionsAdapter(this)
-     /*   all_transactions.adapter = transactionsAdapter
 
-        //rv_last_transactions.layoutManager = LinearLayoutManager(this)
-        all_transactions.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, true)
-        all_transactions.setHasFixedSize(true)
-*/
         rv_last_transactions.adapter = transactionsAdapter
-
-        //rv_last_transactions.layoutManager = LinearLayoutManager(this)
         rv_last_transactions.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, true)
         rv_last_transactions.setHasFixedSize(true)
     }
